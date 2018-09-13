@@ -18,4 +18,29 @@ import "phoenix_html"
 // Local files can be imported directly using relative
 // paths "./socket" or full ones "web/static/js/socket".
 
-// import socket from "./socket"
+import socket from "./socket"
+
+var channel = socket.channel('meetup:lobby', {}); 
+
+channel.on('shout', function (payload) { 
+  var li = document.createElement("li"); 
+  var name = payload.name || 'guest';    
+  li.innerHTML = '<b>' + name + '</b>: ' + payload.message; 
+  ul.appendChild(li);                   
+});
+
+channel.join();
+
+var ul = document.getElementById('msg-list'); 
+var name = document.getElementById('name');  
+var msg = document.getElementById('msg');  
+
+msg.addEventListener('keypress', function (event) {
+  if (event.keyCode == 13 && msg.value.length > 0) {
+    channel.push('shout', { 
+      name: name.value,     
+      message: msg.value    
+    });
+    msg.value = '';         
+  }
+});
