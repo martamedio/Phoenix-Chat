@@ -17,6 +17,9 @@ config :chat, ChatWeb.Endpoint,
   pubsub: [name: Chat.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
+# Configures Jason for JSON parsing
+config :phoenix, :json_library, Jason
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
